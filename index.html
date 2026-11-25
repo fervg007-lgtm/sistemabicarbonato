@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Misión pH 7.4</title>
+<style>
+:root{--bg:#ffe45e;--ink:#1a1a1a;--card:#fff;--red:#e63946;--blue:#1d6fd8;--green:#2a9d4a;--yellow:#ffd60a;--purple:#7b2cbf;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#24203a;--ink:#f5f5f5;--card:#38325a}}
+:root[data-theme="dark"]{--bg:#24203a;--ink:#f5f5f5;--card:#38325a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
+background-image:radial-gradient(rgba(0,0,0,.14) 1.5px,transparent 1.5px);background-size:14px 14px;min-height:100vh}
+.wrap{max-width:480px;margin:0 auto;padding:14px 14px 70px}
+h1{font-family:Impact,"Arial Black",sans-serif;font-size:2.5rem;line-height:1;margin:6px 0 10px;text-transform:uppercase;color:var(--yellow);-webkit-text-stroke:2px #1a1a1a;text-shadow:4px 4px 0 var(--red);transform:rotate(-2deg);text-align:center}
+.panel{background:var(--card);border:4px solid #1a1a1a;border-radius:8px;box-shadow:6px 6px 0 #1a1a1a;padding:14px;margin:12px 0}
+.bubble{position:relative;background:var(--card);border:3px solid #1a1a1a;border-radius:18px;padding:10px 12px;margin:0 0 6px;font-size:.98rem}
+.btn{display:block;width:100%;text-align:left;font:inherit;font-weight:700;font-size:1rem;color:var(--ink);background:var(--card);border:3px solid #1a1a1a;border-radius:10px;padding:12px;margin:8px 0;box-shadow:3px 3px 0 #1a1a1a;cursor:pointer}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #1a1a1a}
+.go{background:var(--red);color:#fff;text-align:center;font-family:Impact,sans-serif;font-size:1.35rem;text-transform:uppercase;letter-spacing:1px}
+.ok{background:var(--green)!important;color:#fff}.bad{background:var(--red)!important;color:#fff}
+.tag{display:inline-block;background:var(--yellow);color:#1a1a1a;border:2px solid #1a1a1a;padding:2px 8px;font-weight:700;font-size:.8rem;transform:rotate(-2deg)}
+.fx{font-family:Impact,sans-serif;font-size:2rem;text-transform:uppercase;margin:0;text-align:center}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:.9rem}
+.tbar{height:18px;border:3px solid #1a1a1a;border-radius:9px;background:var(--card);overflow:hidden;margin:6px 0}
+.tbar i{display:block;height:100%;width:100%;background:var(--green);transition:width .25s linear,background .25s}
+.cast{display:flex;gap:8px;justify-content:center;margin:8px 0}
+.hero{text-align:center;width:25%;font-size:.7rem;font-weight:700;line-height:1.1}
+.badge{position:relative;width:64px;height:64px;margin:0 auto 4px;border:3px solid #1a1a1a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:3px 3px 0 #1a1a1a}
+.badge:before{content:"";position:absolute;z-index:-1;left:-8px;right:-8px;top:34px;height:34px;background:inherit;border:3px solid #1a1a1a;border-radius:4px 4px 50% 50%;filter:brightness(.8)}
+.badge.v:before{border-radius:50% 50% 4px 4px;top:-6px;height:30px}
+.row{display:flex;gap:10px;align-items:flex-end}
+.row .hero{width:84px;flex:none}
+.pow{position:fixed;left:50%;top:38%;z-index:9;transform:translate(-50%,-50%) rotate(-8deg) scale(0);font-family:Impact,sans-serif;font-size:4rem;color:var(--yellow);-webkit-text-stroke:3px #1a1a1a;text-shadow:5px 5px 0 var(--red);pointer-events:none;animation:pow .9s ease-out forwards;white-space:nowrap}
+@keyframes pow{20%{transform:translate(-50%,-50%) rotate(-8deg) scale(1.2)}70%{opacity:1}100%{opacity:0;transform:translate(-50%,-60%) rotate(-8deg) scale(1.1)}}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-10px)}50%{transform:translateX(10px)}75%{transform:translateX(-6px)}}
+.foot{position:fixed;left:0;right:0;bottom:0;background:#1a1a1a;color:var(--yellow);text-align:center;font-size:.72rem;font-weight:700;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));z-index:5}
+.mute{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:8px;z-index:6;font-size:1.3rem;background:var(--card);border:3px solid #1a1a1a;border-radius:50%;width:42px;height:42px;cursor:pointer}
+</style>
+</head>
+<body>
+<button class="mute" id="mute" aria-label="Sonido">🔊</button>
+<div class="wrap" id="app"></div>
+<div class="foot">Feria de Bioquímica - Medicina - Primer Semestre - Grupo B</div>
+<script>
+var H={cap:{n:"Capitán Bicarbonato",e:"🦸‍♂️",c:"#1d6fd8"},co2:{n:"Doctora CO₂",e:"🦸‍♀️",c:"#2a9d4a"},ren:{n:"Súper Riñón",e:"🫘",c:"#f4a261"},
+aci:{n:"Acidosín",e:"😈",c:"#7b2cbf",v:1},alc:{n:"Alcalón",e:"👹",c:"#e76f51",v:1},ana:{n:"Anhidra-Flash",e:"⚡",c:"#ffd60a"}};
+var Q=[
+{w:"alc",e:"🤮",t:"Caso 1",s:"¡Jajaja! Pedro vomitó muchísimo y perdió el ácido de su estómago. ¡Su sangre será mía!",q:"¿Qué le pasa a la sangre de Pedro?",o:["Se vuelve más básica (alcalosis)","Se vuelve más ácida (acidosis)","No cambia nada","Se vuelve azul"],a:0,x:"Si el cuerpo pierde ácido, la sangre se inclina hacia lo básico. A eso se le llama alcalosis."},
+{w:"aci",e:"🚽",t:"Caso 2",s:"Ana tiene diarrea fuerte y pierde bicarbonato, ¡el escudo anti-ácido! ¡Muajaja!",q:"¿Qué le pasa a la sangre de Ana?",o:["Se vuelve más básica","Se vuelve más ácida (acidosis)","Se vuelve más espesa","Nada"],a:1,x:"El bicarbonato es una base que neutraliza ácidos. Si se pierde, la sangre se vuelve más ácida."},
+{w:"co2",e:"😱",t:"Caso 3",s:"Marco está muy nervioso y respira rapidísimo. ¡Está botando demasiado CO₂!",q:"¿Qué pasa con su sangre?",o:["Se vuelve más ácida","Se vuelve más básica (alcalosis)","Se queda igual","Se congela"],a:1,x:"El CO₂ se comporta como un ácido en la sangre. Si lo exhalas de más, la sangre pierde acidez y sube el pH."},
+{w:"aci",e:"🫁",t:"Caso 4",s:"Don Raúl tiene los pulmones dañados y no puede sacar el CO₂. ¡Se acumula!",q:"¿Qué pasa con su sangre?",o:["Más básica","Igual que siempre","Más ácida (acidosis)","Más dulce"],a:2,x:"El CO₂ acumulado forma ácido carbónico y la sangre se acidifica. Los pulmones son clave para controlar el pH."},
+{w:"cap",e:"🛡️",t:"Caso 5",s:"¡Yo soy el héroe de la sangre! Mi poder: neutralizar ácidos.",q:"¿Qué sustancia de la sangre neutraliza los ácidos?",o:["Colesterol","Bicarbonato","Azúcar","Sal de mesa"],a:1,x:"El bicarbonato (HCO₃⁻) es el principal amortiguador de la sangre: absorbe el exceso de ácido."},
+{w:"ren",e:"💪",t:"Caso 6",s:"Los pulmones y yo somos un equipo. Ellos manejan el CO₂, yo manejo el bicarbonato.",q:"¿Qué órgano regula el bicarbonato?",o:["El estómago","El hígado","Los riñones","El corazón"],a:2,x:"Los pulmones ajustan el CO₂ rápido, en minutos. Los riñones ajustan el bicarbonato más lento, en horas o días."},
+{w:"co2",e:"🌡️",t:"Caso 7",s:"La sangre sana debe estar casi en el centro, un poquito básica.",q:"¿Cuál es el pH normal de la sangre?",o:["Cerca de 1 (muy ácido)","Cerca de 7.4","Cerca de 10","Cerca de 14 (muy básico)"],a:1,x:"El pH normal es 7.35–7.45. Si se aleja mucho, aunque sea poquito, el cuerpo entra en peligro."},
+{w:"ana",e:"🏎️",t:"Caso final",s:"¡Soy la Anhidrasa Carbónica! Soy una enzima ultra veloz dentro de tus glóbulos rojos.",q:"¿Qué hace esta enzima?",o:["Digiere las grasas","Produce insulina","Acelera la reacción del CO₂ con el agua","Fabrica glóbulos rojos"],a:2,x:"Convierte CO₂ y agua en ácido carbónico (y al revés) miles de veces más rápido. Así el sistema bicarbonato responde al instante."}
+];
+var T=15,i=0,ok=0,pts=0,streak=0,best=0,left=T,tm=null,locked=false,muted=false,AC=null,app=document.getElementById("app");
+function ac(){try{if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume()}catch(e){}return AC}
+function tone(f,d,t,type,v){if(muted)return;var a=ac();if(!a)return;try{var o=a.createOscillator(),g=a.createGain(),s=a.currentTime+t;o.type=type||"square";o.frequency.setValueAtTime(f,s);g.gain.setValueAtTime(v||.15,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g);g.connect(a.destination);o.start(s);o.stop(s+d)}catch(e){}}
+function vib(p){if(!muted&&navigator.vibrate){try{navigator.vibrate(p)}catch(e){}}}
+function sGood(){[523,659,784,1047].forEach(function(f,k){tone(f,.18,k*.09,"square")});vib([60,40,60,40,120])}
+function sBad(){tone(220,.25,0,"sawtooth",.2);tone(150,.35,.18,"sawtooth",.2);vib([300])}
+function sTick(){tone(900,.06,0,"square",.08);vib([20])}
+function sStart(){[392,523,659,784,1047].forEach(function(f,k){tone(f,.14,k*.07,"triangle")});vib([80,40,80])}
+function sEnd(){[523,523,523,659,784,659,784,1047].forEach(function(f,k){tone(f,.16,k*.11,"square",.12)});vib([100,50,100,50,250])}
+document.getElementById("mute").onclick=function(){muted=!muted;this.textContent=muted?"🔇":"🔊"};
+function hero(k){var h=H[k];return '<div class="hero"><div class="badge'+(h.v?' v':'')+'" style="background:'+h.c+'">'+h.e+'</div>'+h.n+'</div>'}
+function pow(t){var d=document.createElement("div");d.className="pow";d.textContent=t;document.body.appendChild(d);setTimeout(function(){d.remove()},950)}
+function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1)),t=a[k];a[k]=a[j];a[j]=t}return a}
+function home(){clearInterval(tm);i=0;ok=0;pts=0;streak=0;best=0;
+app.innerHTML='<h1>Misión pH 7.4</h1><div style="text-align:center"><span class="tag">Héroes vs. Villanos de la sangre</span></div><div class="panel"><div class="cast">'+hero("cap")+hero("co2")+hero("ren")+'</div><div class="bubble">¡La sangre está en peligro! <b>Acidosín</b> y <b>Alcalón</b> quieren romper el equilibrio. Responde rápido: ¡tienes 15 segundos por caso!</div><div class="cast">'+hero("aci")+hero("alc")+'</div><button class="btn go" id="start">¡Entrar en acción!</button><small>Tip: activa el sonido 🔊 y la vibración.</small></div>';
+document.getElementById("start").onclick=function(){ac();sStart();next()}}
+function next(){locked=false;left=T;var c=Q[i],opts=shuffle(c.o.map(function(t,k){return{t:t,k:k}}));
+var h='<div class="top"><span>Caso '+(i+1)+'/'+Q.length+'</span><span>⭐ '+pts+'</span><span>🔥 x'+streak+'</span><span id="sec">⏱ '+T+'</span></div><div class="tbar"><i id="tb"></i></div><div class="panel" id="card"><span class="tag">'+c.t+' '+c.e+'</span><div class="row" style="margin:10px 0">'+hero(c.w)+'<div class="bubble" style="flex:1">'+c.s+'</div></div><b>'+c.q+'</b>';
+opts.forEach(function(o){h+='<button class="btn" data-k="'+o.k+'">'+o.t+'</button>'});
+h+='</div><div id="fb"></div>';app.innerHTML=h;
+var bs=app.querySelectorAll("[data-k]");
+bs.forEach(function(b){b.onclick=function(){answer(+b.getAttribute("data-k"),b)}});
+clearInterval(tm);tm=setInterval(function(){left--;var s=document.getElementById("sec"),tb=document.getElementById("tb");if(!s)return;s.textContent="⏱ "+Math.max(left,0);tb.style.width=Math.max(left/T*100,0)+"%";tb.style.background=left<=5?"var(--red)":left<=9?"var(--yellow)":"var(--green)";if(left<=5&&left>0)sTick();if(left<=0){clearInterval(tm);answer(-1)}},1000);
+setTimeout(function(){var tb=document.getElementById("tb");if(tb)tb.style.width=(100-100/T)+"%"},30)}
+function answer(k,b){if(locked)return;locked=true;clearInterval(tm);var c=Q[i],right=k===c.a,bs=app.querySelectorAll("[data-k]"),gain=0;
+bs.forEach(function(x){var kk=+x.getAttribute("data-k");if(kk===c.a)x.classList.add("ok");else if(x===b)x.classList.add("bad")});
+if(right){ok++;streak++;if(streak>best)best=streak;gain=100+Math.max(left,0)*10+(streak>1?streak*20:0);pts+=gain;sGood();pow(["¡POW!","¡BAM!","¡ZAP!"][Math.floor(Math.random()*3)])}
+else{streak=0;sBad();document.getElementById("card").classList.add("shake");pow(k<0?"¡TIEMPO!":"¡CRASH!")}
+var msg=right?"¡Héroe! +"+gain+" pts":k<0?"Se acabó el tiempo":"¡Casi! Era la verde";
+document.getElementById("fb").innerHTML='<div class="panel"><p class="fx" style="color:'+(right?'var(--green)':'var(--red)')+'">'+msg+'</p><p>'+c.x+'</p><button class="btn go" id="nx">'+(i<Q.length-1?"Siguiente caso ➜":"Ver resultado")+'</button></div>';
+var n=document.getElementById("nx");n.onclick=function(){i++;if(i<Q.length)next();else end()};n.scrollIntoView({behavior:"smooth",block:"center"})}
+function end(){sEnd();var r=ok>=7?["🏆","Superhéroe del pH","¡Derrotaste a Acidosín y Alcalón!"]:ok>=5?["🦸","Defensor de la sangre","¡Gran trabajo! Casi eres un experto."]:ok>=3?["🧪","Aprendiz de héroe","Vas bien. ¡Una revancha y los vences!"]:["💥","Los villanos ganaron hoy","¡Pide la revancha, el paciente te necesita!"];
+app.innerHTML='<h1>¡Misión terminada!</h1><div class="panel"><div class="cast">'+hero("cap")+hero("co2")+hero("ren")+'</div><p class="fx">'+r[0]+' '+r[1]+'</p><div class="bubble"><b>'+r[2]+'</b><br>Aciertos: '+ok+' / '+Q.length+'<br>Puntos: '+pts+' · Mejor racha: '+best+'</div><p>🎁 Muestra esta pantalla en el stand para recibir tu insignia de superhéroe.</p><button class="btn go" id="again">Jugar de nuevo</button></div>';
+document.getElementById("again").onclick=function(){sStart();home()}}
+home();
+</script>
+</body>
+</html>
